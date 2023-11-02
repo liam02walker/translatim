@@ -1,35 +1,55 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import axios from "axios";
+import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [from, setFrom] = useState("en");
+  const [to, setTo] = useState("en");
+  const [word, setWord] = useState("");
+  const [response, setResponse] = useState({});
+
+  async function handleTranslate(event) {
+    event.preventDefault();
+
+    const API = `http://localhost:8080/translate?word=${word}&from=${from}&to=${to}`;
+    const res = await axios.get(API);
+
+    setResponse(res.data);
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="translateContainer">
+        <h1>Translation</h1>
+        <div className="translateBox">
+          <div className="leftSide">
+            <form className="leftForm" onSubmit={handleTranslate}>
+              <select className="leftSelect" onChange={(event) => setFrom(event.target.value)} name="userLang" id="userLang">
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="ru">Russian</option>
+                <option value="ar">Arabic</option>
+              </select>
+              <input className="leftInput" onChange={(event) => setWord(event.target.value)} type="text" placeholder="Translate" />
+            </form>
+          </div>
+          <div className="rightSide">
+            <form className="rightForm">
+              <select className="rightSelect" onChange={(event) => setTo(event.target.value)} name="translationLang" id="translationLang">
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="ru">Russian</option>
+                <option value="ar">Arabic</option>
+              </select>
+            </form>
+            <div className="output">
+              <h2 className="outputH2">{response.translation}</h2>
+            </div>
+          </div>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
-
-export default App
