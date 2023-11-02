@@ -11,7 +11,7 @@ export default function App() {
   async function handleTranslate(event) {
     event.preventDefault();
 
-    const API = `http://localhost:8080/translate?word=${word}&from=${from}&to=${to}`;
+    const API = `https://translatim-cvem.onrender.com/translate?word=${word}&from=${from}&to=${to}`;
     const res = await axios.get(API);
 
     setResponse(res.data);
