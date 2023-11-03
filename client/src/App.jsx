@@ -7,6 +7,7 @@ export default function App() {
   const [to, setTo] = useState("en");
   const [word, setWord] = useState("");
   const [response, setResponse] = useState({});
+  const [gif, setGif] = useState("");
 
   async function handleTranslate(event) {
     event.preventDefault();
@@ -15,6 +16,7 @@ export default function App() {
     const res = await axios.get(API);
 
     setResponse(res.data);
+    setGif(res.data.image);
   }
 
   return (
@@ -46,6 +48,7 @@ export default function App() {
             </form>
             <div className="output">
               <h2 className="outputH2">{response.translation}</h2>
+              <img src={gif} alt="gif of the translated word" />
             </div>
           </div>
         </div>
